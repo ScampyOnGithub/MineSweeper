@@ -3,7 +3,6 @@
 """
 - Replace test() with GUI inputs
 - Replace gamesetup() with GUI inputs
-- ln 186 add blank resource
 """
 #Modules
 import tkinter as tk
@@ -12,15 +11,16 @@ import time
 import Subroutines as sub
 
 #Data Structures
-numberOfMines =0
+randomx = 0
+randomy = 0
+numberOfMines = 0
 boardx = 5
 boardy = 5
 shownBoard = []
 hiddenBoard = []
-isFirstMove = False
 buttonList = []
-randomx = 0
-randomy = 0
+isFirstMove = False
+gameRun = False
 selectionMode = "dig"
 
 #Subroutines
@@ -34,14 +34,10 @@ def test(): ## TODO Replace test() with GUI inputs
 ##    GO.title("Game Over")
 ##    GO.geometry("1000x500")
 
-
-
-
-
-gameRun = False
 menu = tk.Tk()
 menu.title("Minesweeper")
 menu.geometry("1000x600")
+
 #Resources
 img1 = '1.png'
 img2 = '2.png'
@@ -58,6 +54,7 @@ img_restart = 'restart.png'
 img_safe = 'safe.png'
 img_game_over = 'gameOver.png'
 img_menu = "menu.png"
+img_grass = "grass.png"
 imgArr = [tk.PhotoImage(file=img_mine), # 0
           tk.PhotoImage(file=img1), # 1
           tk.PhotoImage(file=img2), # 2
@@ -71,7 +68,10 @@ imgArr = [tk.PhotoImage(file=img_mine), # 0
           tk.PhotoImage(file=img_flag), # 10
           tk.PhotoImage(file=img_shovel), # 11
           tk.PhotoImage(file=img_restart), # 12
-          tk.PhotoImage(file=img_menu)] # 13
+          tk.PhotoImage(file=img_menu), # 13
+          tk.PhotoImage(file=img_game_over), # 14
+          tk.PhotoImage(file=img_grass)] #15
+
 lblTitle = tk.Label(menu, image = imgArr[13])
 lblTitle.pack()
 btnEasy = tk.Button(menu, text="Easy", command=lambda: sub.gameSetup("easy"))
