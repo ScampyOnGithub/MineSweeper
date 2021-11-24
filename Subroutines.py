@@ -10,6 +10,8 @@ def interact(tilex,tiley):
             dig(tilex,tiley)
         elif Sweep.selectionMode == "flag":
             flag(tilex,tiley)
+        elif Sweep.selectionMode == "hint":
+            hint(tilex,tiley)
 
 def changeMode(mode):
     global selectionMode
@@ -22,7 +24,7 @@ def gameSetup(difficulty): ## TODO Replace gameSetup() with GUI inputs
     if difficulty == "easy":
         boardx, boardy, numberOfMines = 20, 10, 25
     if difficulty == "normal":
-        boardx, boardy, numberOfMines= 20, 10, 30
+        boardx, boardy, numberOfMines= 20, 10, 40
     if difficulty == "hard":
         boardx, boardy, numberOfMines= 20, 10, 50
     if difficulty == "custom":
@@ -32,15 +34,22 @@ def gameSetup(difficulty): ## TODO Replace gameSetup() with GUI inputs
     master.title("Minesweeper")
     master.geometry("1000x600")
     shovelBtn = tk.Button(master, image = Sweep.imgArr[11],
-                          command=lambda: changeMode("dig")
+                          command=lambda: changeMode("dig"),
+                          highlightthickness = 0, bd = 0
                           )
     shovelBtn.place(x=450, y=500)
     flagBtn = tk.Button(master, image = Sweep.imgArr[10],
                         command=lambda: changeMode("flag"),
-                        highlightcolor = "blue"
+                        highlightcolor = "blue",
+                        highlightthickness = 0, bd = 0
                         )
     flagBtn.place(x=500,y=500)
     boardGen()
+    hintBtn = tk.Button(master, image = Sweep.imgArr[17],
+                        command=lambda: changeMode("hint"),
+                        highlightthickness = 0, bd = 0
+                        )
+    hintBtn.place(x=560, y=500)
 
 def numberIncr(x,y):
     global hiddenBoard
@@ -86,6 +95,7 @@ def number():
                                              command=lambda x=x, y=y: interact(x,y),
                                              bg="#f3f3f3", fg="#ffffff",
                                              relief = "groove",
+                                             highlightthickness = 0, bd = 0,
                                              activebackground='#999999')
             buttonList[x][y].place(x=x*50,y=y*50)
 
@@ -105,7 +115,7 @@ def boardGen():
                 buttonList[x][y] = tk.Button(master, image=Sweep.imgArr[int(shownBoard[x][y])],
                                              command=lambda x=x, y=y: interact(x,y),
                                              bg="#f3f3f3", fg="#ffffff",
-                                             relief = "groove",
+                                             highlightthickness = 0, bd = 0,
                                              activebackground='#999999')
                 buttonList[x][y].place(x=x*50,y=y*50)
 
@@ -135,11 +145,12 @@ def dig(tilex,tiley):
                                              command=lambda x=x, y=y: interact(x,y),
                                              bg="#f3f3f3", fg="#ffffff",
                                              relief = "groove",
+                                             highlightthickness = 0, bd = 0,
                                              activebackground='#999999')
                 buttonList[x][y].place(x=x*50,y=y*50)
         isFirstMove = False
     shownBoard[int(tilex)][int(tiley)] = hiddenBoard[int(tilex)][int(tiley)] # displays the hidden value on the board
-    buttonList[tilex][tiley] = tk.Label(master, image=Sweep.imgArr[int(shownBoard[tilex][tiley])])
+    buttonList[tilex][tiley] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[tilex][tiley])])
     buttonList[tilex][tiley].place(x=tilex*50, y=tiley*50)
     if hiddenBoard[int(tilex)][int(tiley)] == 0:
         gameOver()
@@ -155,7 +166,7 @@ def flag(tilex,tiley):
         shownBoard[tilex][tiley] = 15  ## ADD RESOURCE ##
     else:
         shownBoard[tilex][tiley] = 10
-    buttonList[tilex][tiley] = tk.Button(master, image=Sweep.imgArr[int(shownBoard[tilex][tiley])], command=lambda x=tilex, y=tiley:interact(x,y))
+    buttonList[tilex][tiley] = tk.Button(master, image=Sweep.imgArr[int(shownBoard[tilex][tiley])], highlightthickness = 0, bd = 0, command=lambda x=tilex, y=tiley:interact(x,y))
     buttonList[tilex][tiley].place(x=tilex*50, y=tiley*50)
 
 def groupClear():
@@ -173,20 +184,60 @@ def groupClear():
                     # WEST
                     if x>0 and shownBoard[x-1][y] != hiddenBoard[x-1][y] and hiddenBoard[x-1][y] != 0:
                         change, shownBoard[x-1][y] = True, hiddenBoard[x-1][y]
-                        buttonList[x-1][y] = tk.Label(master, image=Sweep.imgArr[int(shownBoard[x-1][y])])
+                        buttonList[x-1][y] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[x-1][y])])
                         buttonList[x-1][y].place(x=x*50-50, y=y*50)
                     # EAST
                     if x<boardx-1 and shownBoard[x+1][y] != hiddenBoard[x+1][y] and hiddenBoard[x+1][y] != 0:
                         change, shownBoard[x+1][y] = True, hiddenBoard[x+1][y]
-                        buttonList[x+1][y] = tk.Label(master, image=Sweep.imgArr[int(shownBoard[x+1][y])])
+                        buttonList[x+1][y] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[x+1][y])])
                         buttonList[x+1][y].place(x=x*50+50, y=y*50)
                     # NORTH
                     if y>0 and shownBoard[x][y-1] != hiddenBoard[x][y-1] and hiddenBoard[x][y-1] != 0:
                         change, shownBoard[x][y-1] = True, hiddenBoard[x][y-1]
-                        buttonList[x][y-1] = tk.Label(master, image=Sweep.imgArr[int(shownBoard[x][y-1])])
+                        buttonList[x][y-1] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[x][y-1])])
                         buttonList[x][y-1].place(x=x*50, y=y*50-50)
                     # SOUTH
                     if y<boardy-1 and shownBoard[x][y+1] != hiddenBoard[x][y+1] and hiddenBoard[x][y+1] != 0:
                         change, shownBoard[x][y+1] = True, hiddenBoard[x][y+1]
-                        buttonList[x][y+1] = tk.Label(master, image=Sweep.imgArr[int(shownBoard[x][y+1])])
+                        buttonList[x][y+1] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[x][y+1])])
                         buttonList[x][y+1].place(x=x*50, y=y*50+50)
+                    # NORTHWEST
+                    if y>0 and x>0 and shownBoard[x-1][y-1] != hiddenBoard[x-1][y-1] and hiddenBoard[x-1][y-1] != 0:
+                        change, shownBoard[x-1][y-1] = True, hiddenBoard[x-1][y-1]
+                        buttonList[x-1][y-1] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[x-1][y-1])])
+                        buttonList[x-1][y-1].place(x=x*50-50, y=y*50-50)
+                    # NORTHEAST
+                    if y>0 and x<boardx-1 and shownBoard[x+1][y-1] != hiddenBoard[x+1][y-1] and hiddenBoard[x+1][y-1] != 0:
+                        change, shownBoard[x+1][y-1] = True, hiddenBoard[x+1][y-1]
+                        buttonList[x+1][y-1] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[x+1][y-1])])
+                        buttonList[x+1][y-1].place(x=x*50+50, y=y*50-50)
+                    # SOUTHWEST
+                    if y<boardy-1 and x>0 and shownBoard[x-1][y+1] != hiddenBoard[x-1][y+1] and hiddenBoard[x-1][y+1] != 0:
+                        change, shownBoard[x-1][y+1] = True, hiddenBoard[x-1][y+1]
+                        buttonList[x-1][y+1] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[x-1][y+1])])
+                        buttonList[x-1][y+1].place(x=x*50-50, y=y*50+50)
+                    # SOUTHEAST
+                    if y<boardy-1 and x<boardx-1 and shownBoard[x+1][y+1] != hiddenBoard[x+1][y+1] and hiddenBoard[x+1][y+1] != 0:
+                        change, shownBoard[x+1][y+1] = True, hiddenBoard[x+1][y+1]
+                        buttonList[x+1][y+1] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[x+1][y+1])])
+                        buttonList[x+1][y+1].place(x=x*50+50, y=y*50+50)
+
+def gameOver():
+    global shownBoard, hiddenBoard
+    for x in range(boardx):
+        for y in range(boardy):
+            shownBoard[x][y] = hiddenBoard[x][y]
+            if shownBoard[x][y] == 0:
+                buttonList[x][y] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[16])
+                buttonList[x][y].place(x=x*50,y=y*50)
+                
+def hint(tilex,tiley):
+    global hints, shownBoard, hiddenBoard
+    if Sweep.hints > 0:
+        shownBoard[tilex][tiley] = hiddenBoard[tilex][tiley]
+        buttonList[tilex][tiley] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[tilex][tiley])])
+        buttonList[tilex][tiley].place(x=tilex*50,y=tiley*50)
+        Sweep.hints -= 1
+    else:
+        print("Error: not enough hints remaining.")
+        

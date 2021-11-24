@@ -11,6 +11,7 @@ import time
 import Subroutines as sub
 
 #Data Structures
+hints = 3
 randomx = 0
 randomy = 0
 numberOfMines = 0
@@ -22,17 +23,6 @@ buttonList = []
 isFirstMove = False
 gameRun = False
 selectionMode = "dig"
-
-#Subroutines
-def test(): ## TODO Replace test() with GUI inputs
-    global selectionMode, shownBoard
-    sub.gameSetup("easy") # asks for difficulty + sets boardx, boardy, numberOfMines
-    sub.boardGen() # generates shownBoard and hiddenBoard
-
-##def gameOver():
-##    GO = tk.Toplevel()
-##    GO.title("Game Over")
-##    GO.geometry("1000x500")
 
 menu = tk.Tk()
 menu.title("Minesweeper")
@@ -55,6 +45,11 @@ img_safe = 'safe.png'
 img_game_over = 'gameOver.png'
 img_menu = "menu.png"
 img_grass = "grass.png"
+img_boom = "boom.png"
+img_hint = "hint.png"
+img_easy = "easy.png"
+img_normal = "normal.png"
+img_hard = "hard.png"
 imgArr = [tk.PhotoImage(file=img_mine), # 0
           tk.PhotoImage(file=img1), # 1
           tk.PhotoImage(file=img2), # 2
@@ -70,9 +65,19 @@ imgArr = [tk.PhotoImage(file=img_mine), # 0
           tk.PhotoImage(file=img_restart), # 12
           tk.PhotoImage(file=img_menu), # 13
           tk.PhotoImage(file=img_game_over), # 14
-          tk.PhotoImage(file=img_grass)] #15
+          tk.PhotoImage(file=img_grass), # 15
+          tk.PhotoImage(file=img_boom), # 16
+          tk.PhotoImage(file=img_hint), # 17
+          tk.PhotoImage(file=img_easy), # 18
+          tk.PhotoImage(file=img_normal),
+          tk.PhotoImage(file=img_hard)
+          ]
 
 lblTitle = tk.Label(menu, image = imgArr[13])
 lblTitle.pack()
-btnEasy = tk.Button(menu, text="Easy", command=lambda: sub.gameSetup("easy"))
-btnEasy.place(x=100, y=100)
+btnEasy = tk.Button(menu, text="Easy", image=imgArr[18], highlightthickness = 0, width = 350, height = 50, bd = 0, command=lambda: sub.gameSetup("easy"))
+btnEasy.place(x=25, y=100)
+btnNormal = tk.Button(menu, text="Normal", image=imgArr[19], highlightthickness = 0, width = 350, height = 50, bd = 0, command=lambda:sub.gameSetup("normal"))
+btnNormal.place(x=25,y=175)
+btnHard = tk.Button(menu, text="Hard", image=imgArr[20], highlightthickness = 0, width = 350, height = 50, bd = 0, command=lambda:sub.gameSetup("hard"))
+btnHard.place(x=25,y=250)
