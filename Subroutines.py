@@ -241,3 +241,11 @@ def hint(tilex,tiley):
     else:
         print("Error: not enough hints remaining.")
         
+def leaderboard():
+    Sweep.lblLeaderboard.place(x=500,y=30)
+    Sweep.lblTutorial.place_forget()
+
+def tutorial():
+    Sweep.lblTutorial.place(x=405,y=15)
+    Sweep.lblLeaderboard.place_forget()
+
