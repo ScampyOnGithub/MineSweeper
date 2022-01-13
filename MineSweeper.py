@@ -1,9 +1,7 @@
 ###MineSweeper Game
 ##TODO:
-"""
-- Replace test() with GUI inputs
-- Replace gamesetup() with GUI inputs
-"""
+"add leaderboard"
+"add timer"
 #Modules
 import tkinter as tk
 import random
@@ -23,6 +21,9 @@ buttonList = []
 isFirstMove = False
 gameRun = False
 selectionMode = "dig"
+leaderBoard = []
+startTime = 0
+endTime = 0
 
 menu = tk.Tk()
 menu.title("Minesweeper")
