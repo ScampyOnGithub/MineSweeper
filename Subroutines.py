@@ -4,14 +4,15 @@ import random
 import time
 
 def interact(tilex,tiley):
-    global selectionMode
-    if tilex < boardx and tiley < boardy and tilex > -1 and tiley > -1:
-        if Sweep.selectionMode == "dig":
-            dig(tilex,tiley)
-        elif Sweep.selectionMode == "flag":
-            flag(tilex,tiley)
-        elif Sweep.selectionMode == "hint":
-            hint(tilex,tiley)
+    global selectionMode, gameRun
+    if gameRun == True:
+        if tilex < boardx and tiley < boardy and tilex > -1 and tiley > -1:
+            if Sweep.selectionMode == "dig":
+                dig(tilex,tiley)
+            elif Sweep.selectionMode == "flag":
+                flag(tilex,tiley)
+            elif Sweep.selectionMode == "hint":
+                hint(tilex,tiley)
 
 def changeMode(mode):
     global selectionMode
@@ -124,7 +125,7 @@ def dig(tilex,tiley):
     Reveals the contents of the selected tile.
     If the tile is a mine, then the game is over and the player loses.
     """
-    global isFirstMove, hiddenBoard, shownBoard, boardx, boardy, buttonList, numberOfMines
+    global isFirstMove, hiddenBoard, shownBoard, boardx, boardy, buttonList, numberOfMines, startTime
     if isFirstMove == True:
         remainingMines = numberOfMines
         randomx, randomy = int(tilex), int(tiley)
@@ -148,6 +149,7 @@ def dig(tilex,tiley):
                                              highlightthickness = 0, bd = 0,
                                              activebackground='#999999')
                 buttonList[x][y].place(x=x*50,y=y*50)
+        Sweep.startTime = time.perf_counter()
         isFirstMove = False
     shownBoard[int(tilex)][int(tiley)] = hiddenBoard[int(tilex)][int(tiley)] # displays the hidden value on the board
     buttonList[tilex][tiley] = tk.Label(master, highlightthickness = 0, bd = 0, image=Sweep.imgArr[int(shownBoard[tilex][tiley])])
@@ -223,7 +225,11 @@ def groupClear():
                         buttonList[x+1][y+1].place(x=x*50+50, y=y*50+50)
 
 def gameOver():
-    global shownBoard, hiddenBoard
+    global shownBoard, hiddenBoard, gameRun, startTime, boardx, boardy
+    gameRun = False
+    endTime = time.perf_counter()
+    timeTaken = endTime - Sweep.startTime
+    print(timeTaken)
     for x in range(boardx):
         for y in range(boardy):
             shownBoard[x][y] = hiddenBoard[x][y]
@@ -245,7 +251,10 @@ def leaderboard():
     Sweep.lblLeaderboard.place(x=500,y=30)
     Sweep.lblTutorial.place_forget()
 
+def leaderboardGenerate():
+    global leaderboard
+    
+
 def tutorial():
     Sweep.lblTutorial.place(x=405,y=15)
     Sweep.lblLeaderboard.place_forget()
-
